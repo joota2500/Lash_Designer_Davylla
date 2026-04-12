@@ -3,13 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const carousel = document.getElementById("carouselHeader");
   const header = document.getElementById("topoFixo");
   const btnWhatsapp = document.getElementById("btnWhatsapp");
+  const secoes = document.querySelectorAll(".secao");
 
   let ultimoScroll = 0;
 
   /* ===============================
      EFEITO SCROLL (CARROSSEL + MENU)
   =============================== */
-
   window.addEventListener("scroll", () => {
 
     const scrollAtual = window.scrollY;
@@ -36,10 +36,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 
+
+  // ================= TOGGLE SERVIÇOS =================
+const btnServicos = document.getElementById("btnServicos");
+const listaServicos = document.getElementById("lista-servicos");
+
+if (btnServicos && listaServicos) {
+  btnServicos.addEventListener("click", () => {
+
+    if (listaServicos.classList.contains("esconder-servicos")) {
+      listaServicos.classList.remove("esconder-servicos");
+      btnServicos.textContent = "Ocultar valores";
+    } else {
+      listaServicos.classList.add("esconder-servicos");
+      btnServicos.textContent = "Ver valores";
+    }
+
+  });
+}
+
   /* ===============================
      SCROLL SUAVE
   =============================== */
-
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener("click", function (e) {
       e.preventDefault();
@@ -56,14 +74,21 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ===============================
-     WHATSAPP
+     WHATSAPP INTELIGENTE (UPGRADE)
   =============================== */
-
   if (btnWhatsapp) {
+
+    const hora = new Date().getHours();
+
+    if (hora >= 8 && hora <= 20) {
+      btnWhatsapp.textContent = "Agendar agora no WhatsApp";
+    } else {
+      btnWhatsapp.textContent = "Enviar mensagem no WhatsApp";
+    }
 
     btnWhatsapp.addEventListener("click", () => {
 
-      const numero = "5585991171274"; // Seu número correto
+      const numero = "5585991171274";
       const mensagem = "Olá, vim pelo site e gostaria de agendar um horário.";
 
       const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
@@ -73,5 +98,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   }
+
+  /* ===============================
+     SCROLL REVEAL (NOVO)
+  =============================== */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("aparecer");
+      }
+    });
+  }, {
+    threshold: 0.15
+  });
+
+  secoes.forEach(secao => {
+    observer.observe(secao);
+  });
 
 });
