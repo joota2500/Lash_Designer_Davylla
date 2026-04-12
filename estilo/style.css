@@ -194,6 +194,16 @@ main {
   margin-top: 8px;
 }
 
+/* clique mais responsivo */
+.whatsapp-fixo:active {
+  transform: scale(0.95);
+}
+
+/* transição suave */
+.whatsapp-fixo {
+  transition: 0.2s;
+}
+
 /* ================= IMAGENS PERFIL ================= */
 .perfil-img {
   width: 320px;

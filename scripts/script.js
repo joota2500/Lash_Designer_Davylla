@@ -3,9 +3,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const carousel = document.getElementById("carouselHeader");
   const header = document.getElementById("topoFixo");
   const btnWhatsapp = document.getElementById("btnWhatsapp");
+  const btnAgendar = document.querySelector(".btn-agendar");
   const secoes = document.querySelectorAll(".secao");
 
   let ultimoScroll = 0;
+
+  /* ===============================
+     FUNÇÃO WHATSAPP (BASE)
+  =============================== */
+  function enviarWhatsApp(mensagem) {
+    const numero = "5585991171274";
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+    window.open(url, "_blank");
+  }
 
   /* ===============================
      EFEITO SCROLL (CARROSSEL + MENU)
@@ -14,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const scrollAtual = window.scrollY;
 
-    // Oculta carrossel suavemente
     if (carousel) {
       if (scrollAtual > 50) {
         carousel.classList.add("ocultar");
@@ -23,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Esconde menu ao rolar para baixo
     if (header) {
       if (scrollAtual > ultimoScroll && scrollAtual > 150) {
         header.classList.add("esconder");
@@ -36,24 +44,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 
+  /* ===============================
+     TOGGLE SERVIÇOS
+  =============================== */
+  const btnServicos = document.getElementById("btnServicos");
+  const listaServicos = document.getElementById("lista-servicos");
 
-  // ================= TOGGLE SERVIÇOS =================
-const btnServicos = document.getElementById("btnServicos");
-const listaServicos = document.getElementById("lista-servicos");
+  if (btnServicos && listaServicos) {
+    btnServicos.addEventListener("click", () => {
 
-if (btnServicos && listaServicos) {
-  btnServicos.addEventListener("click", () => {
+      if (listaServicos.classList.contains("esconder-servicos")) {
+        listaServicos.classList.remove("esconder-servicos");
+        btnServicos.textContent = "Ocultar valores";
+      } else {
+        listaServicos.classList.add("esconder-servicos");
+        btnServicos.textContent = "Ver valores";
+      }
 
-    if (listaServicos.classList.contains("esconder-servicos")) {
-      listaServicos.classList.remove("esconder-servicos");
-      btnServicos.textContent = "Ocultar valores";
-    } else {
-      listaServicos.classList.add("esconder-servicos");
-      btnServicos.textContent = "Ver valores";
-    }
-
-  });
-}
+    });
+  }
 
   /* ===============================
      SCROLL SUAVE
@@ -74,7 +83,7 @@ if (btnServicos && listaServicos) {
   });
 
   /* ===============================
-     WHATSAPP INTELIGENTE (UPGRADE)
+     BOTÃO WHATSAPP (CONTATO)
   =============================== */
   if (btnWhatsapp) {
 
@@ -88,19 +97,53 @@ if (btnServicos && listaServicos) {
 
     btnWhatsapp.addEventListener("click", () => {
 
-      const numero = "5585991171274";
-      const mensagem = "Olá, vim pelo site e gostaria de agendar um horário.";
+      btnWhatsapp.textContent = "Abrindo WhatsApp...";
+      btnWhatsapp.style.opacity = "0.7";
 
-      const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
-
-      window.open(url, "_blank");
+      enviarWhatsApp("Olá, vi seu site e gostaria de mais informações.");
 
     });
 
   }
 
   /* ===============================
-     SCROLL REVEAL (NOVO)
+     BOTÃO AGENDAR (TOPO)
+  =============================== */
+  if (btnAgendar) {
+    btnAgendar.addEventListener("click", (e) => {
+
+      e.preventDefault();
+
+      enviarWhatsApp("Olá, gostaria de agendar um horário.");
+
+    });
+  }
+
+  /* ===============================
+   BOTÃO WHATSAPP FIXO
+=============================== */
+const btnFixo = document.getElementById("whatsappFixo");
+
+if (btnFixo) {
+  btnFixo.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    // feedback visual
+    btnFixo.textContent = "Abrindo WhatsApp...";
+    btnFixo.style.opacity = "0.7";
+
+    enviarWhatsApp("Olá! Vim pelo site e quero agendar um horário.");
+
+    // volta ao normal depois
+    setTimeout(() => {
+      btnFixo.textContent = "WhatsApp";
+      btnFixo.style.opacity = "1";
+    }, 2000);
+  });
+}
+
+  /* ===============================
+     SCROLL REVEAL
   =============================== */
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
