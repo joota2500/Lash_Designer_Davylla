@@ -6,10 +6,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnAgendar = document.querySelector(".btn-agendar");
   const secoes = document.querySelectorAll(".secao");
 
+  const menuToggle = document.getElementById("menuToggle");
+  const menuLista = document.getElementById("menuLista");
+  const overlayMenu = document.getElementById("overlayMenu");
+
   let ultimoScroll = 0;
 
   /* ===============================
-     FUNÇÃO WHATSAPP (BASE)
+     WHATSAPP BASE
   =============================== */
   function enviarWhatsApp(mensagem) {
     const numero = "5585991171274";
@@ -18,18 +22,38 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ===============================
-     EFEITO SCROLL (CARROSSEL + MENU)
+     MENU TOGGLE (🔥 NOVO)
+  =============================== */
+  if (menuToggle && menuLista && overlayMenu) {
+
+    menuToggle.addEventListener("click", () => {
+      menuLista.classList.toggle("ativo");
+      overlayMenu.classList.toggle("ativo");
+    });
+
+    overlayMenu.addEventListener("click", () => {
+      menuLista.classList.remove("ativo");
+      overlayMenu.classList.remove("ativo");
+    });
+
+    // FECHA AO CLICAR
+    menuLista.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        menuLista.classList.remove("ativo");
+        overlayMenu.classList.remove("ativo");
+      });
+    });
+  }
+
+  /* ===============================
+     SCROLL HEADER
   =============================== */
   window.addEventListener("scroll", () => {
 
     const scrollAtual = window.scrollY;
 
     if (carousel) {
-      if (scrollAtual > 50) {
-        carousel.classList.add("ocultar");
-      } else {
-        carousel.classList.remove("ocultar");
-      }
+      carousel.classList.toggle("ocultar", scrollAtual > 50);
     }
 
     if (header) {
@@ -41,28 +65,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     ultimoScroll = scrollAtual;
-
   });
 
   /* ===============================
-     TOGGLE SERVIÇOS
+     MENU ATIVO
   =============================== */
-  const btnServicos = document.getElementById("btnServicos");
-  const listaServicos = document.getElementById("lista-servicos");
+  const links = document.querySelectorAll(".menu-lista a");
 
-  if (btnServicos && listaServicos) {
-    btnServicos.addEventListener("click", () => {
+  window.addEventListener("scroll", () => {
+    let current = "";
 
-      if (listaServicos.classList.contains("esconder-servicos")) {
-        listaServicos.classList.remove("esconder-servicos");
-        btnServicos.textContent = "Ocultar valores";
-      } else {
-        listaServicos.classList.add("esconder-servicos");
-        btnServicos.textContent = "Ver valores";
+    document.querySelectorAll("section").forEach(section => {
+      const sectionTop = section.offsetTop - 120;
+
+      if (scrollY >= sectionTop) {
+        current = section.getAttribute("id");
       }
-
     });
-  }
+
+    links.forEach(a => {
+      a.classList.remove("ativo");
+
+      if (a.getAttribute("href") === "#" + current) {
+        a.classList.add("ativo");
+      }
+    });
+  });
 
   /* ===============================
      SCROLL SUAVE
@@ -75,88 +103,71 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (target) {
         target.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
+          behavior: "smooth"
         });
       }
     });
   });
 
   /* ===============================
-     BOTÃO WHATSAPP (CONTATO)
+     BOTÃO WHATSAPP
   =============================== */
   if (btnWhatsapp) {
-
-    const hora = new Date().getHours();
-
-    if (hora >= 8 && hora <= 20) {
-      btnWhatsapp.textContent = "Agendar agora no WhatsApp";
-    } else {
-      btnWhatsapp.textContent = "Enviar mensagem no WhatsApp";
-    }
-
     btnWhatsapp.addEventListener("click", () => {
-
-      btnWhatsapp.textContent = "Abrindo WhatsApp...";
-      btnWhatsapp.style.opacity = "0.7";
-
-      enviarWhatsApp("Olá, vi seu site e gostaria de mais informações.");
-
+      btnWhatsapp.textContent = "Abrindo...";
+      enviarWhatsApp("Olá, vi seu site e quero mais informações.");
     });
-
   }
 
-  /* ===============================
-     BOTÃO AGENDAR (TOPO)
-  =============================== */
   if (btnAgendar) {
     btnAgendar.addEventListener("click", (e) => {
-
       e.preventDefault();
-
-      enviarWhatsApp("Olá, gostaria de agendar um horário.");
-
+      enviarWhatsApp("Olá, quero agendar um horário.");
     });
   }
 
   /* ===============================
-   BOTÃO WHATSAPP FIXO
-=============================== */
-const btnFixo = document.getElementById("whatsappFixo");
+     WHATSAPP FIXO
+  =============================== */
+  const btnFixo = document.getElementById("whatsappFixo");
 
-if (btnFixo) {
-  btnFixo.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    // feedback visual
-    btnFixo.textContent = "Abrindo WhatsApp...";
-    btnFixo.style.opacity = "0.7";
-
-    enviarWhatsApp("Olá! Vim pelo site e quero agendar um horário.");
-
-    // volta ao normal depois
-    setTimeout(() => {
-      btnFixo.textContent = "WhatsApp";
-      btnFixo.style.opacity = "1";
-    }, 2000);
-  });
-}
+  if (btnFixo) {
+    btnFixo.addEventListener("click", (e) => {
+      e.preventDefault();
+      enviarWhatsApp("Olá! Vim pelo site e quero agendar.");
+    });
+  }
 
   /* ===============================
-     SCROLL REVEAL
+     FAQ
   =============================== */
-  const observer = new IntersectionObserver((entries) => {
+  document.querySelectorAll(".faq-pergunta").forEach(btn => {
+    btn.addEventListener("click", () => {
+      btn.parentElement.classList.toggle("ativo");
+    });
+  });
+
+  const btnFaq = document.getElementById("btnFaq");
+  const faqExtra = document.querySelector(".faq-extra");
+
+  if (btnFaq && faqExtra) {
+    btnFaq.addEventListener("click", () => {
+      const hidden = faqExtra.classList.toggle("esconder-faq");
+      btnFaq.textContent = hidden ? "Ver mais perguntas" : "Ocultar perguntas";
+    });
+  }
+
+  /* ===============================
+     ANIMAÇÃO SCROLL
+  =============================== */
+  const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add("aparecer");
       }
     });
-  }, {
-    threshold: 0.15
-  });
+  }, { threshold: 0.15 });
 
-  secoes.forEach(secao => {
-    observer.observe(secao);
-  });
+  secoes.forEach(secao => observer.observe(secao));
 
 });
