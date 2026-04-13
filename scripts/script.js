@@ -6,10 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnAgendar = document.querySelector(".btn-agendar");
   const secoes = document.querySelectorAll(".secao");
 
-  const menuToggle = document.getElementById("menuToggle");
-  const menuLista = document.getElementById("menuLista");
-  const overlayMenu = document.getElementById("overlayMenu");
-
   let ultimoScroll = 0;
 
   /* ===============================
@@ -19,30 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const numero = "5585991171274";
     const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
     window.open(url, "_blank");
-  }
-
-  /* ===============================
-     MENU TOGGLE (🔥 NOVO)
-  =============================== */
-  if (menuToggle && menuLista && overlayMenu) {
-
-    menuToggle.addEventListener("click", () => {
-      menuLista.classList.toggle("ativo");
-      overlayMenu.classList.toggle("ativo");
-    });
-
-    overlayMenu.addEventListener("click", () => {
-      menuLista.classList.remove("ativo");
-      overlayMenu.classList.remove("ativo");
-    });
-
-    // FECHA AO CLICAR
-    menuLista.querySelectorAll("a").forEach(link => {
-      link.addEventListener("click", () => {
-        menuLista.classList.remove("ativo");
-        overlayMenu.classList.remove("ativo");
-      });
-    });
   }
 
   /* ===============================
@@ -68,9 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ===============================
-     MENU ATIVO
+     MENU ATIVO (SCROLL)
   =============================== */
-  const links = document.querySelectorAll(".menu-lista a");
+  const links = document.querySelectorAll(".navbar .nav-link");
 
   window.addEventListener("scroll", () => {
     let current = "";
@@ -78,16 +50,16 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("section").forEach(section => {
       const sectionTop = section.offsetTop - 120;
 
-      if (scrollY >= sectionTop) {
+      if (window.scrollY >= sectionTop) {
         current = section.getAttribute("id");
       }
     });
 
-    links.forEach(a => {
-      a.classList.remove("ativo");
+    links.forEach(link => {
+      link.classList.remove("ativo");
 
-      if (a.getAttribute("href") === "#" + current) {
-        a.classList.add("ativo");
+      if (link.getAttribute("href") === "#" + current) {
+        link.classList.add("ativo");
       }
     });
   });

@@ -51,6 +51,7 @@ body {
   backdrop-filter: blur(10px);
   transition: transform 0.4s ease;
   border-bottom: 1px solid rgba(0,0,0,0.05);
+  position: sticky;
 }
 
 #topoFixo.esconder {
@@ -336,119 +337,36 @@ main {
 
 /* ================= MENU PROFISSIONAL REAL ================= */
 
-/* NAV */
-.nav-pro {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 
-  max-width: 900px;
-  margin: 20px auto 0 auto;
-  padding: 0 15px;
+
+#sobre {
+  margin-top: 40px;
 }
 
-/* BOTÃO MENU */
-.menu-toggle {
-  width: 42px;
-  height: 42px;
-
-  border-radius: 10px;
-
-  background: linear-gradient(135deg, #c38eb4, #a96d94);
-  color: white;
-
-  font-size: 18px;
-
-  border: none;
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow: 0 6px 20px rgba(195,142,180,0.35);
+#sobre h2{
+  margin-bottom: 15px;
+  letter-spacing: 1px;
 }
 
-
-
-
-
-/* MENU LATERAL (MENOR E PREMIUM) */
-.menu-lista {
-  position: fixed;
-  top: 0;
-  right: -100%;
-
-  width: 260px;
-  height: 100%;
-
-  background: #fff;
-
-  padding: 80px 20px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  transition: right 0.3s ease;
-
-  z-index: 1001;
-
-  list-style: none;
-
-  overflow-y: auto;
-}
-
-/* ABERTO */
-.menu-lista.ativo {
-  right: 0;
-}
-
-.menu-lista li {
-  list-style: none;
-}
-
-/* LINKS */
-.menu-lista a {
-  display: block;
-
-  text-decoration: none;
-  color: #222;
-
-  font-size: 15px;
-  font-weight: 500;
-
-  padding: 12px 14px;
-
-  border-radius: 10px;
-
-  transition: 0.2s;
-
-  border-left: 3px solid transparent;
-}
-
-.menu-lista a:hover {
-  background: rgba(195,142,180,0.1);
-  color: var(--cor-destaque);
-  border-left: 3px solid var(--cor-destaque);
-}
 
 /* BOTÃO CTA */
+/* BOTÃO AGENDAR */
 .btn-menu-agendar {
-  background: linear-gradient(135deg, #c38eb4, #a96d94);
+  background: var(--cor-destaque);
   color: white !important;
 
-  padding: 12px;
-
+  padding: 6px 12px;
   border-radius: 20px;
 
-  text-align: center;
-  margin-top: 10px;
-
-  font-weight: 600;
-
-  box-shadow: 0 8px 20px rgba(195,142,180,0.3);
+  font-size: 13px;
 }
+
+
+.btn-menu-agendar:hover {
+  background: var(--cor-hover);
+}
+
+
 
 #carouselHeader {
   position: relative;
@@ -456,78 +374,44 @@ main {
 }
 
 .identidade-menu {
+  padding: 25px 15px 15px;
   position: relative;
   z-index: 2;
 }
 
 
-/* OVERLAY MAIS LEVE */
-.overlay-menu {
-  position: fixed;
-  inset: 0;
 
-  background: rgba(0,0,0,0.3);
 
-  opacity: 0;
-  pointer-events: none;
-
-  transition: 0.3s;
-
-  z-index: 1000;
+/* NAVBAR AJUSTE LIMPO */
+.navbar {
+  border-radius: 20px;
 }
 
-.overlay-menu.ativo {
-  opacity: 1;
-  pointer-events: all;
-}
-
-
-.menu-toggle:hover {
-  transform: scale(1.1);
-}
-
-.menu-label {
+.navbar .nav-link {
   font-size: 14px;
-  color: #888;
+  color: #333;
   font-weight: 500;
+  transition: 0.3s;
+}
+
+.navbar .nav-link:hover {
+  color: var(--cor-destaque);
+}
+
+.navbar-toggler {
+  border: none;
 }
 
 
 
-
-
-
-
-
-
-
-
-
-/* ================= RESPONSIVO ================= */
+/* MOBILE LIMPO */
 @media (max-width: 768px) {
-
-  .carousel-img {
-    height: 30vh;
-  }
-
-  .perfil-img {
-    width: 220px;
-    height: 220px;
-  }
-
-  .titulo-principal {
-    font-size: 30px;
-  }
-
-
-
-  .menu-lista a {
-    font-size: 12px;
+  .navbar-nav {
+    gap: 10px;
   }
 
   .btn-menu-agendar {
-    padding: 5px 10px;
-    font-size: 12px;
+    width: 100%;
+    text-align: center;
   }
-
 }
