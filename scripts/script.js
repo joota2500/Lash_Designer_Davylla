@@ -1,145 +1,155 @@
-document.addEventListener("DOMContentLoaded", () => {
+const CONFIG = {
+  whatsappNumber: "5585999999999",
+  whatsappMessage: "Olá, Davylla! Vim pelo site e gostaria de agendar um horário."
+};
 
-  const carousel = document.getElementById("carouselHeader");
-  const header = document.getElementById("topoFixo");
-  const btnWhatsapp = document.getElementById("btnWhatsapp");
-  const btnAgendar = document.querySelector(".btn-agendar");
-  const secoes = document.querySelectorAll(".secao");
-
-  let ultimoScroll = 0;
-
-  /* ===============================
-     WHATSAPP BASE
-  =============================== */
-  function enviarWhatsApp(mensagem) {
-    const numero = "5585991171274";
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
-    window.open(url, "_blank");
+const services = [
+  {
+    title: "Extensão de cílios",
+    description: "Aplicação personalizada para realçar o olhar com leveza, conforto e durabilidade.",
+    highlight: "Natural, volume ou efeito mais marcante"
+  },
+  {
+    title: "Manutenção de cílios",
+    description: "Reposição dos fios para manter o formato, volume e acabamento por mais tempo.",
+    highlight: "Indicada entre 15 e 20 dias"
+  },
+  {
+    title: "Design de sobrancelhas",
+    description: "Modelagem precisa respeitando simetria facial, formato natural e beleza individual.",
+    highlight: "Acabamento elegante e harmônico"
   }
+];
 
-  /* ===============================
-     SCROLL HEADER
-  =============================== */
-  window.addEventListener("scroll", () => {
+const faqs = [
+  {
+    question: "Quanto tempo dura a extensão?",
+    answer: "Dura em média de 15 a 25 dias, dependendo dos cuidados e do ciclo natural dos fios."
+  },
+  {
+    question: "Precisa de manutenção?",
+    answer: "Sim. A manutenção é indicada a cada 15 a 20 dias para manter volume, alinhamento e formato."
+  },
+  {
+    question: "Os cílios danificam os naturais?",
+    answer: "Não, quando aplicados corretamente por uma profissional e com os cuidados recomendados."
+  },
+  {
+    question: "Posso molhar os cílios?",
+    answer: "Sim, após as primeiras 24 horas. O ideal é evitar produtos oleosos na região."
+  },
+  {
+    question: "Posso usar maquiagem?",
+    answer: "Sim, mas evite rímel e demaquilantes oleosos para preservar a durabilidade."
+  },
+  {
+    question: "Quanto tempo dura o procedimento?",
+    answer: "Geralmente entre 1h30 e 2h, dependendo da técnica e do volume escolhido."
+  },
+  {
+    question: "Quem não pode fazer?",
+    answer: "Pessoas com alergia ativa, irritação ou problemas oculares devem evitar e buscar orientação antes."
+  }
+];
 
-    const scrollAtual = window.scrollY;
+const menuToggle = document.querySelector(".menu-toggle");
+const menu = document.querySelector(".menu");
+const slides = document.querySelectorAll(".slide");
+const serviceList = document.querySelector("#lista-servicos");
+const faqList = document.querySelector("#faqLista");
+const whatsappLinks = document.querySelectorAll(".whatsapp-link");
+const modal = document.querySelector("#modalImagem");
+const modalImage = document.querySelector("#imgExpandida");
+const modalClose = document.querySelector(".modal-close");
 
-    if (carousel) {
-      carousel.classList.toggle("ocultar", scrollAtual > 50);
-    }
+let currentSlide = 0;
 
-    if (header) {
-      if (scrollAtual > ultimoScroll && scrollAtual > 150) {
-        header.classList.add("esconder");
-      } else {
-        header.classList.remove("esconder");
-      }
-    }
+function buildWhatsappUrl() {
+  const message = encodeURIComponent(CONFIG.whatsappMessage);
+  return `https://wa.me/${CONFIG.whatsappNumber}?text=${message}`;
+}
 
-    ultimoScroll = scrollAtual;
+function setupWhatsappLinks() {
+  whatsappLinks.forEach((link) => {
+    link.href = buildWhatsappUrl();
+    link.target = "_blank";
+    link.rel = "noopener";
+  });
+}
+
+function setupMenu() {
+  menuToggle.addEventListener("click", () => {
+    const isOpen = menu.classList.toggle("open");
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
   });
 
-  /* ===============================
-     MENU ATIVO (SCROLL)
-  =============================== */
-  const links = document.querySelectorAll(".navbar .nav-link");
-
-  window.addEventListener("scroll", () => {
-    let current = "";
-
-    document.querySelectorAll("section").forEach(section => {
-      const sectionTop = section.offsetTop - 120;
-
-      if (window.scrollY >= sectionTop) {
-        current = section.getAttribute("id");
-      }
+  menu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      menu.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
     });
+  });
+}
 
-    links.forEach(link => {
-      link.classList.remove("ativo");
+function setupSlider() {
+  if (slides.length < 2) return;
 
-      if (link.getAttribute("href") === "#" + current) {
-        link.classList.add("ativo");
-      }
+  setInterval(() => {
+    slides[currentSlide].classList.remove("active");
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add("active");
+  }, 4500);
+}
+
+function renderServices() {
+  serviceList.innerHTML = services.map((service) => `
+    <article class="service-card">
+      <h3>${service.title}</h3>
+      <p>${service.description}</p>
+      <strong>${service.highlight}</strong>
+    </article>
+  `).join("");
+}
+
+function renderFaqs() {
+  faqList.innerHTML = faqs.map((item, index) => `
+    <article class="faq-item ${index === 0 ? "open" : ""}">
+      <button class="faq-question" type="button" aria-expanded="${index === 0 ? "true" : "false"}">
+        ${item.question}
+      </button>
+      <div class="faq-answer">
+        ${item.answer}
+      </div>
+    </article>
+  `).join("");
+
+  faqList.querySelectorAll(".faq-question").forEach((button) => {
+    button.addEventListener("click", () => {
+      const item = button.closest(".faq-item");
+      const isOpen = item.classList.toggle("open");
+      button.setAttribute("aria-expanded", String(isOpen));
+    });
+  });
+}
+
+function setupImageModal() {
+  document.querySelectorAll(".result-card img").forEach((image) => {
+    image.parentElement.addEventListener("click", () => {
+      modalImage.src = image.src;
+      modalImage.alt = image.alt;
+      modal.showModal();
     });
   });
 
-  /* ===============================
-     SCROLL SUAVE
-  =============================== */
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-
-      const target = document.querySelector(this.getAttribute("href"));
-
-      if (target) {
-        target.scrollIntoView({
-          behavior: "smooth"
-        });
-      }
-    });
+  modalClose.addEventListener("click", () => modal.close());
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) modal.close();
   });
+}
 
-  /* ===============================
-     BOTÃO WHATSAPP
-  =============================== */
-  if (btnWhatsapp) {
-    btnWhatsapp.addEventListener("click", () => {
-      btnWhatsapp.textContent = "Abrindo...";
-      enviarWhatsApp("Olá, vi seu site e quero mais informações.");
-    });
-  }
-
-  if (btnAgendar) {
-    btnAgendar.addEventListener("click", (e) => {
-      e.preventDefault();
-      enviarWhatsApp("Olá, quero agendar um horário.");
-    });
-  }
-
-  /* ===============================
-     WHATSAPP FIXO
-  =============================== */
-  const btnFixo = document.getElementById("whatsappFixo");
-
-  if (btnFixo) {
-    btnFixo.addEventListener("click", (e) => {
-      e.preventDefault();
-      enviarWhatsApp("Olá! Vim pelo site e quero agendar.");
-    });
-  }
-
-  /* ===============================
-     FAQ
-  =============================== */
-  document.querySelectorAll(".faq-pergunta").forEach(btn => {
-    btn.addEventListener("click", () => {
-      btn.parentElement.classList.toggle("ativo");
-    });
-  });
-
-  const btnFaq = document.getElementById("btnFaq");
-  const faqExtra = document.querySelector(".faq-extra");
-
-  if (btnFaq && faqExtra) {
-    btnFaq.addEventListener("click", () => {
-      const hidden = faqExtra.classList.toggle("esconder-faq");
-      btnFaq.textContent = hidden ? "Ver mais perguntas" : "Ocultar perguntas";
-    });
-  }
-
-  /* ===============================
-     ANIMAÇÃO SCROLL
-  =============================== */
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("aparecer");
-      }
-    });
-  }, { threshold: 0.15 });
-
-  secoes.forEach(secao => observer.observe(secao));
-
-});
+setupWhatsappLinks();
+setupMenu();
+setupSlider();
+renderServices();
+renderFaqs();
+setupImageModal();
