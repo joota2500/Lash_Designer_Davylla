@@ -1,23 +1,48 @@
 const CONFIG = {
-  whatsappNumber: "5585999999999",
+  whatsappNumber: "5585989947614",
   whatsappMessage: "Olá, Davylla! Vim pelo site e gostaria de agendar um horário."
 };
 
 const services = [
   {
-    title: "Extensão de cílios",
-    description: "Aplicação personalizada para realçar o olhar com leveza, conforto e durabilidade.",
-    highlight: "Natural, volume ou efeito mais marcante"
+    title: "Cílios Tufos",
+    description: "Aplicação rápida para destacar o olhar de forma prática e acessível.",
+    highlight: "R$ 35,00 • Sem manutenção"
   },
   {
-    title: "Manutenção de cílios",
-    description: "Reposição dos fios para manter o formato, volume e acabamento por mais tempo.",
-    highlight: "Indicada entre 15 e 20 dias"
+    title: "Efeito Fox",
+    description: "Alongamento com efeito puxado nos cantos externos, proporcionando um olhar mais marcante e elegante.",
+    highlight: "R$ 80,00 • Manutenção: R$ 70,00 (15 a 20 dias)"
   },
   {
-    title: "Design de sobrancelhas",
-    description: "Modelagem precisa respeitando simetria facial, formato natural e beleza individual.",
-    highlight: "Acabamento elegante e harmônico"
+    title: "Volume Brasileiro",
+    description: "Técnica que proporciona volume equilibrado, mantendo leveza e naturalidade.",
+    highlight: "R$ 70,00 • Manutenção: R$ 60,00 (15 a 20 dias)"
+  },
+  {
+    title: "Volume Egípcio",
+    description: "Alongamento com maior definição e volume, ideal para quem busca um olhar mais intenso.",
+    highlight: "R$ 75,00 • Manutenção: R$ 65,00 (15 a 20 dias)"
+  },
+  {
+    title: "Mega Volume 5D (Glamour)",
+    description: "Extensão de cílios com efeito volumoso e sofisticado para máxima intensidade no olhar.",
+    highlight: "R$ 85,00 • Manutenção: R$ 70,00 (15 a 20 dias)"
+  },
+  {
+    title: "Design de Sobrancelhas",
+    description: "Modelagem personalizada respeitando o formato natural do rosto e valorizando a expressão facial.",
+    highlight: "R$ 10,00"
+  },
+  {
+    title: "Epilação de Buço",
+    description: "Remoção dos pelos da região do buço com acabamento limpo e delicado.",
+    highlight: "R$ 5,00"
+  },
+  {
+    title: "Remoção de Cílios",
+    description: "Procedimento seguro para retirada das extensões sem comprometer os fios naturais.",
+    highlight: "R$ 10,00 (trabalho próprio) • R$ 15,00 (outra profissional)"
   }
 ];
 
@@ -102,13 +127,65 @@ function setupSlider() {
 }
 
 function renderServices() {
-  serviceList.innerHTML = services.map((service) => `
+
+  serviceList.innerHTML = services.slice(0, 3).map((service) => `
     <article class="service-card">
       <h3>${service.title}</h3>
       <p>${service.description}</p>
       <strong>${service.highlight}</strong>
     </article>
   `).join("");
+
+}
+
+function setupServicesModal() {
+
+const openButton = document.querySelector("#btnTodosServicos");
+const modal = document.querySelector("#servicesModal");
+const closeButton = document.querySelector("#closeServicesModal");
+const modalList = document.querySelector("#servicesModalList");
+
+if (!openButton || !modal || !closeButton || !modalList) return;
+
+modalList.innerHTML = services.map((service) => `
+  <div class="service-info">
+    <strong>${service.title}</strong>
+    <small>${service.description}</small>
+  </div>
+  <span class="service-value">
+    ${service.highlight}
+  </span>
+</div>
+
+`).join();
+
+function closeModal() {
+modal.classList.remove("active");
+document.body.style.overflow = "";
+}
+
+openButton.addEventListener("click", () => {
+modal.classList.add("active");
+document.body.style.overflow = "hidden";
+});
+
+closeButton.addEventListener("click", closeModal);
+
+modal.addEventListener("click", (event) => {
+if (event.target === modal) {
+closeModal();
+}
+});
+
+document.addEventListener("keydown", (event) => {
+if (
+event.key === "Escape" &&
+modal.classList.contains("active")
+) {
+closeModal();
+}
+});
+
 }
 
 function renderFaqs() {
@@ -147,9 +224,51 @@ function setupImageModal() {
   });
 }
 
+const servicesModal = document.querySelector("#servicesModal");
+const servicesModalList = document.querySelector("#servicesModalList");
+const closeServicesModal = document.querySelector("#closeServicesModal");
+const btnTodosServicos = document.querySelector("#btnTodosServicos");
+
+if (
+  servicesModal &&
+  servicesModalList &&
+  closeServicesModal &&
+  btnTodosServicos
+) {
+
+  servicesModalList.innerHTML = services.map((service) => `
+    <div class="service-row">
+      <div class="service-info">
+        <strong>${service.title}</strong>
+        <small>${service.description}</small>
+      </div>
+
+      <span class="service-value">
+        ${service.highlight}
+      </span>
+    </div>
+  `).join("");
+
+  btnTodosServicos.addEventListener("click", () => {
+    servicesModal.classList.add("active");
+  });
+
+  closeServicesModal.addEventListener("click", () => {
+    servicesModal.classList.remove("active");
+  });
+
+  servicesModal.addEventListener("click", (e) => {
+    if (e.target === servicesModal) {
+      servicesModal.classList.remove("active");
+    }
+  });
+
+}
+
 setupWhatsappLinks();
 setupMenu();
 setupSlider();
 renderServices();
 renderFaqs();
 setupImageModal();
+setupServicesModal();

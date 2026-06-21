@@ -103,8 +103,18 @@
 
     <section class="section centered" id="servicos">
       <p class="section-label">Serviços</p>
-      <h2>Escolha o procedimento ideal</h2>
-      <div class="service-grid" id="lista-servicos"></div>
+      <h2>Escolha o procedimento ideal</h2><div class="service-grid" id="lista-servicos"></div>
+        <div class="services-action">
+          <button
+            id="btnTodosServicos"
+            class="btn btn-secondary"
+            type="button">
+
+            Tabela completa de serviços
+
+          </button>
+
+        </div>
     </section>
 
     <section class="section centered" id="resultados">
@@ -144,7 +154,7 @@
       </div>
       <div class="contact-actions">
         <a class="btn btn-primary whatsapp-link" href="#">Falar no WhatsApp</a>
-        <a class="btn btn-instagram" href="https://www.instagram.com/davy.lashdesigner/" target="_blank" rel="noopener">Instagram</a>
+        <a class="btn btn-instagram" href="https://www.instagram.com/davyllarochabeauty/" target="_blank" rel="noopener">Instagram</a>
       </div>
     </section>
   </main>
@@ -168,6 +178,28 @@
     <img id="imgExpandida" alt="">
   </dialog>
 
+    <div id="servicesModal" class="services-modal">
+    <div class="services-modal-content">
+  <button
+    id="closeServicesModal"
+    class="close-services-modal"
+    aria-label="Fechar">
+    &times;
+  </button>
+  <div class="services-modal-header">
+    <span>Tabela Completa</span>
+    <h2>Serviços e Valores</h2>
+    <p>
+      Escolha a técnica ideal para valorizar ainda mais seu olhar.
+    </p>
+  </div>
+  <div id="servicesModalList"></div>
+    </div>
+ </div>
+
+
   <script src="scripts/script.js"></script>
+
+
 </body>
 </html>
