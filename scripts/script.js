@@ -7,7 +7,7 @@ const services = [
   {
     title: "Cílios Tufos",
     description: "Aplicação rápida para destacar o olhar de forma prática e acessível.",
-    highlight: "R$ 35,00 • Sem manutenção"
+    highlight: "R$ 30,00 • Sem manutenção"
   },
   {
     title: "Efeito Fox",
